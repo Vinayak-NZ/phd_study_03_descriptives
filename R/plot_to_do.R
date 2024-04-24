@@ -5,9 +5,9 @@
 2) bar graph of sex
 3) bar graph of major
 4) scatter plot of language and proficiency
-5) heatmap of country resided and received healthcare
-6) bar graph of country of birth
-7) histogram of years since arrival
+6) heatmap of region resided and region of birth
+7) bar graph of region of birth
+8) histogram of years since arrival
 
 # health
 1) bar graph of pre-existing health conditions

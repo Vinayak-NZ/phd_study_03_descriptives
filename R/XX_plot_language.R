@@ -1,16 +1,23 @@
+## ---- plot-language-proficiency
 
+# extract languages spoken
+demographics$language <- gsub(" ", "", 
+                              demographics$language, 
+                              fixed = TRUE)
 
-
-
-demographics$language <- gsub(" ", "", demographics$language, fixed = TRUE)
-demographics$language_proficiency <- gsub(" ", "", demographics$language_proficiency, fixed = TRUE)
-
-
-language_list <- regmatches(demographics$language, gregexpr("(?<=\\{)[^{}]+(?=\\})", demographics$language, perl=TRUE))
+language_list <- regmatches(demographics$language, 
+                            gregexpr("(?<=\\{)[^{}]+(?=\\})", 
+                                     demographics$language, 
+                                     perl=TRUE))
 
 language_list_edited <- lapply(language_list, strsplit, ",")
 
 languages_spoken <- unlist(language_list_edited)
+
+# extract language proficiency
+demographics$language_proficiency <- gsub(" ", "", 
+                                          demographics$language_proficiency, 
+                                          fixed = TRUE)
 
 language_proficiency_list <- regmatches(demographics$language_proficiency, 
                             gregexpr("(?<=\\{)[^{}]+(?=\\})", 
@@ -21,10 +28,9 @@ language_proficiency_list_edited <- lapply(language_proficiency_list, strsplit, 
 
 languages_spoken_proficiency <- unlist(language_proficiency_list_edited)
 
-
+# aggregate data
 languages_input <- data.frame(language = languages_spoken, 
                         language_proficiency = languages_spoken_proficiency)
-
 
 languages_input_table <- 
   as.data.frame(table(languages_input$language, 
@@ -38,6 +44,7 @@ languages_input_table$Count <- languages_input_table$Freq
 
 languages_input_table <- languages_input_table[languages_input_table$Count > 0, ]
 
+# aggregate data
 ggplot(languages_input_table, aes(language, language_proficiency)) + 
   geom_point(aes(size = Count), colour = "#4739a2") + 
   labs(title = paste0("Characteristics of collaborators"), 
@@ -52,10 +59,3 @@ ggplot(languages_input_table, aes(language, language_proficiency)) +
         plot.subtitle = element_text(color = "#454543"),
         plot.caption = element_text(color = "#454543", face = "italic")
     )
-  
-
-
-
-split_string <- test_two <- strsplit(test, ",")
-
-test_two <- gsub("^(.*?),.*", "\\1", test)
