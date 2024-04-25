@@ -24,7 +24,7 @@ cr_respondents_match <- c()
 
 for(i in 1:nrow(demographics)){
   
-  x <- rep(paste0("CC", i), test_two[[i]])
+  x <- rep(paste0("CC", i), cr_number_responses[[i]])
   
   cr_respondents_match <- c(cr_respondents_match, x)
   
@@ -56,9 +56,25 @@ ch_respondents_match <- c()
 
 for(i in 1:nrow(demographics)){
   
-  x <- rep(paste0("CC", i), test_two[[i]])
+  x <- rep(paste0("CC", i), ch_number_responses[[i]])
   
   ch_respondents_match <- c(ch_respondents_match, x)
+  
+}
+
+# extract country of birth for countries resided in
+cob_number_responses_list <- lapply(country_health_care_list_edited, 
+                                   function(x) {length(unlist(x))})
+
+cob_number_responses <- unlist(cob_number_responses_list)
+
+cob_respondents_match <- c()
+
+for(i in 1:nrow(demographics)){
+  
+  x <- rep(demographics[i, "country_birth"], cob_number_responses[[i]])
+  
+  cob_respondents_match <- c(cob_respondents_match, x)
   
 }
 
@@ -132,23 +148,83 @@ ggplot(region_input, aes(region, co_creator)) +
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
+# aggregate data for country of birth and for country received health care in
+healthcare_received <- data.frame(region_birth = cob_respondents_match, 
+                                  healthcare = country_health_care_received)
+
+healthcare_received$region_birth <- 
+  ifelse(healthcare_received$region_birth %in% c("Myanmar", 
+                                                 "Cyprus", 
+                                                 "India", 
+                                                 "Bahrain", 
+                                                 "Oman", 
+                                                 "Turkey", 
+                                                 "Palestine", 
+                                                 "Israel"), 
+         "Asia", 
+         ifelse(healthcare_received$region_birth %in% c("Serbia",
+                                                        "Poland", 
+                                                        "France"), 
+                "Europe", 
+                ifelse(healthcare_received$region_birth %in% c("Barbados", 
+                                                               "Brazil", 
+                                                               "Nicaragua"), 
+                       "Americas", NA)))
+
+healthcare_received$healthcare <- 
+  ifelse(healthcare_received$healthcare %in% c("Myanmar", 
+                                                 "Cyprus", 
+                                                 "India", 
+                                                 "Bahrain", 
+                                                 "Oman", 
+                                                 "Turkey", 
+                                                 "PalestineWestBank", 
+                                                 "Israel"), 
+         "Asia", 
+         ifelse(healthcare_received$healthcare %in% c("Serbia",
+                                                        "Poland", 
+                                                        "France"), 
+                "Europe", 
+                ifelse(healthcare_received$healthcare %in% c("Barbados", 
+                                                               "Brazil", 
+                                                               "Nicaragua"), 
+                       "Americas", NA)))
 
 
+cob_input_table <- 
+  as.data.frame(table(healthcare_received$region_birth, 
+                      healthcare_received$healthcare))
+
+cob_input_table$region_birth <- cob_input_table$Var1
+
+cob_input_table$healthcare <- cob_input_table$Var2
+
+cob_input_table$Count <- cob_input_table$Freq
 
 # plot region of birth vs region received care in using heatmap
 
-# 
 
-
-
-# plot regions resided in
-ggplot(region_input, aes(region, co_creator)) + 
-  geom_point(size = 5,colour = "#4739a2") + 
+ggplot(cob_input_table, 
+       aes(region_birth, 
+           healthcare, 
+           fill = Count)) +
+  geom_tile(color = "#FFFFFF",
+            lwd = 1.5,
+            linetype = 1) +
+  geom_text(aes(label = Count), color = "#FFFFFF", size = 4) +
+  coord_fixed() + 
+  scale_fill_gradient2(low = "#e18b22",
+                       mid = "#46e7fd",
+                       high = "#4739a2", 
+                       labels = c("0", "2", "4", "6", "8")) +
   labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Scatterplot of regions resided in prior to Germany",
+       subtitle = "Heatmap of regions received care in preior to Germany",
        caption = "Data source: Patient preparedness tool") +
-  xlab("Region") + 
-  ylab("Collaborator") +
+  xlab("Region of birth") + 
+  ylab("Region received health care in") +
+  guides(fill = guide_colourbar(title = "Count",
+                                barwidth = 0.5,
+                                barheight = 20)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), 
         panel.grid = element_line(color = "#e18b22", size = 0.2, linetype = 2),
         plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
@@ -156,121 +232,30 @@ ggplot(region_input, aes(region, co_creator)) +
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
+## ---- plot-months-since-arrival
 
+demographics$date_workshop <- 
+  as.Date("2024-02-06")
 
+demographics$year_arrival_date_estimate <- 
+  as.Date(paste0(demographics$year_arrival,"-", "09-01"))
 
+demographics$weeks_arrival <- 
+  difftime(demographics$date_workshop, 
+           demographics$year_arrival_date_estimate, 
+           units = "weeks")
 
+demographics$month_approximation <- 
+  (demographics$weeks_arrival/4)
 
-
-
-
-
-
-
-
-
-
-country_input_table <- 
-  as.data.frame(table(region_input$co_creator, 
-                      region_input$region))
-
-
-
-
-
-
-
-
-country_input_table$co_creator <- country_input_table$Var1
-
-country_input_table$region <- country_input_table$Var2
-
-country_input_table$Count <- country_input_table$Freq
-
-country_input_table <- country_input_table[country_input_table$Count > 0, ]
-
-ggplot(country_input_table, aes(co_creator, region, fill = Count)) +
-  geom_tile(color = "white",
-            lwd = 1.5,
-            linetype = 1) +
-  coord_fixed()
-
-
-
-country_input <- data.frame(co_creator = test_par, 
-                            country_resided = countries_resided)
-
-
-country_input_table <- 
-  as.data.frame(table(country_input$co_creator, 
-                      country_input$country_resided))
-
-country_input_table$co_creator <- country_input_table$Var1
-
-country_input_table$country_resided <- country_input_table$Var2
-
-country_input_table$Count <- country_input_table$Freq
-
-country_input_table <- country_input_table[country_input_table$Count > 0, ]
-
-ggplot(country_input_table, aes(co_creator, countries_resided, fill = Count)) +
-  geom_tile(color = "white",
-            lwd = 1.5,
-            linetype = 1) +
-  coord_fixed()
-
-
-
-
-length(country_list_edited[[1]])
-
-length(unlist(country_list_edited[1]))
-
-
-
-demographics$countries_health_care <- gsub(" ", "", demographics$countries_health_care, fixed = TRUE)
-
-country_health_care_list <- regmatches(demographics$countries_health_care, 
-                                        gregexpr("(?<=\\{)[^{}]+(?=\\})", 
-                                                 demographics$countries_health_care, 
-                                                 perl=TRUE))
-
-country_health_care_list_edited <- lapply(country_health_care_list, strsplit, ",")
-
-country_health_care_received <- unlist(country_health_care_list_edited)
-
-
-country_input <- data.frame(country_resided = countries_resided, 
-                              country_health_care = country_health_care_received)
-
-
-country_input_table <- 
-  as.data.frame(table(country_input$country_resided, 
-                           country_input$country_health_care))
-
-country_input_table$countries_resided <- country_input_table$Var1
-
-country_input_table$country_health_care_received <- country_input_table$Var2
-
-country_input_table$Count <- country_input_table$Freq
-
-country_input_table <- country_input_table[country_input_table$Count > 0, ]
-
-ggplot(country_input_table, aes(countries_resided, country_health_care_received, fill = Count)) +
-  geom_tile(color = "white",
-            lwd = 1.5,
-            linetype = 1) +
-  coord_fixed()
-
-
-ggplot(languages_input_table, aes(language, language_proficiency)) + 
-  geom_point(aes(size = Count), colour = "#4739a2") + 
+ggplot(demographics, aes(x = month_approximation)) +
+  geom_histogram(bins = 7, fill = "#4739a2") +
   labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Scatterplot of language proficiency in workshop",
+       subtitle = "Histogram of months since arrival in Germany",
        caption = "Data source: Patient preparedness tool") +
-  xlab("Language") + 
-  ylab("Proficiency") + 
-  scale_size_continuous(range = c(1, 12)) +
+  xlab("Time since arrival (Months)") + 
+  ylab("Count") + 
+  xlim(0, 60) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
         plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
