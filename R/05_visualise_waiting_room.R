@@ -1,28 +1,11 @@
-## ---- visualise-waiting-room-survey
-
-# aggregate visit variables
-waiting_room_visit <- waiting_room_exp
-
-waiting_room_visit$arrange_visit <- 
-  factor(waiting_room_visit$arrange_visit, levels = c("Calling ahead and making an appointment ", 
-                                                      "Walking into the clinic and waiting  ", 
-                                                      "Other"))
-
-visit_input <- as.data.frame(table(waiting_room_visit$arrange_visit, 
-                                   waiting_room_visit$self_visit))
-
-visit_input$arrange_visit <- visit_input$Var1
-
-visit_input$self_visit <- visit_input$Var2
-
-visit_input$Count <- visit_input$Freq
+## ---- visualise-visit-variables
 
 visit.labels <- c("Calling ahead and\nmaking an appointment",
                "Walking into clinic \nand waiting", 
                "Other")
 
-# plot heatmap of approach to visit and self visit
-ggplot(visit_input, 
+clinic_visit_plot <- 
+  ggplot(visit_input, 
        aes(arrange_visit, 
            self_visit, 
            fill = Count)) +
@@ -51,71 +34,13 @@ ggplot(visit_input,
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
-# extract people interacted with
-waiting_room_visit$people_interaction <- gsub(" ", "", 
-                                              waiting_room_visit$people_interaction, 
-                                              fixed = TRUE)
+ggsave("output/clinic_visit_plot.png", 
+       plot = clinic_visit_plot)
 
-waiting_room_list <- regmatches(waiting_room_visit$people_interaction, 
-                           gregexpr("(?<=\\{)[^{}]+(?=\\})", 
-                                    waiting_room_visit$people_interaction, 
-                                    perl=TRUE))
+## ---- visualise-people-interactions
 
-waiting_room_list_edited <- lapply(waiting_room_list, strsplit, ",")
-
-waiting_room_interactions <- unlist(waiting_room_list_edited)
-
-# extract respondents for people interacted with
-wri_number_responses_list <- lapply(waiting_room_list_edited, 
-                                   function(x) {length(unlist(x))})
-
-wri_number_responses <- unlist(wri_number_responses_list)
-
-wri_respondents_match <- c()
-
-for(i in 1:nrow(waiting_room_exp)){
-  
-  x <- rep(paste0("CC", i), wri_number_responses[[i]])
-  
-  wri_respondents_match <- c(wri_respondents_match, x)
-  
-}
-
-people_interaction_input <- data.frame(co_creator = wri_respondents_match, 
-                                       people_interaction = waiting_room_interactions)
-
-people_interaction_input$co_creator <- 
-  ifelse(
-    people_interaction_input$co_creator == "CC1", 
-    "CC01", 
-    ifelse(
-      people_interaction_input$co_creator == "CC2", 
-      "CC02", 
-      ifelse(
-        people_interaction_input$co_creator == "CC3", 
-        "CC03", 
-        ifelse(
-          people_interaction_input$co_creator == "CC4", 
-          "CC04", 
-          ifelse(
-            people_interaction_input$co_creator == "CC5", 
-            "CC05", 
-            ifelse(
-              people_interaction_input$co_creator == "CC6", 
-              "CC06", 
-              ifelse(
-                people_interaction_input$co_creator == "CC7", 
-                "CC07", 
-                ifelse(
-                  people_interaction_input$co_creator == "CC8", 
-                  "CC08", 
-                  ifelse(
-                    people_interaction_input$co_creator == "CC9", 
-                    "CC09", 
-                    people_interaction_input$co_creator)))))))))
-
-# plot people interacted with
-ggplot(people_interaction_input, aes(people_interaction, co_creator)) + 
+waiting_room_interactions <- 
+  ggplot(people_interaction_input, aes(people_interaction, co_creator)) + 
   geom_point(size = 5,colour = "#4739a2") + 
   labs(title = paste0("Experiences of collaborators"), 
        subtitle = "Scatterplot of interactions during typical visit in waiting room",
@@ -129,26 +54,10 @@ ggplot(people_interaction_input, aes(people_interaction, co_creator)) +
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
-# standardise waiting time
-waiting_room_exp$waiting_time_standardised <- 
-  ifelse(grepl("20 minutes| 15| 5", waiting_room_exp$clinic_wait), "< 30", 
-         ifelse(grepl("30", waiting_room_exp$clinic_wait), ">= 30", NA))
+ggsave("output/waiting_room_interactions.png", 
+       plot = waiting_room_interactions)
 
-# impute waiting time
-waiting_room_exp$waiting_time_standardised <- 
-  ifelse(!is.na(waiting_room_exp$waiting_time_standardised), 
-         waiting_room_exp$waiting_time_standardised, 
-         ifelse(waiting_room_exp$clinic_busy == "Very busy", ">= 30", "< 30"))
-
-# aggregate waiting time and waiting location
-waiting_time_location <- as.data.frame(table(waiting_room_exp$waiting_time_standardised, 
-                                             waiting_room_exp$wait_location))
-
-waiting_time_location$wait_time <- waiting_time_location$Var1
-
-waiting_time_location$wait_location <- waiting_time_location$Var2
-
-waiting_time_location$Count <- waiting_time_location$Freq
+## ---- visualise-wait-time-location
 
 wait.time.labels <- c("< 30",
                           "> = 30")
@@ -157,8 +66,8 @@ wait.location.labels <- c("Inside the \nclinic",
                   "Outside the \nclinic", 
                   "Other")
 
-# plot heatmap of approach to visit and self visit
-ggplot(waiting_time_location, 
+wait_time_location_plot <- 
+  ggplot(waiting_time_location, 
        aes(wait_time, 
            wait_location, 
            fill = Count)) +
@@ -187,22 +96,17 @@ ggplot(waiting_time_location,
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
-# aggregate waiting room and waiting location
-waiting_room_location <- as.data.frame(table(waiting_room_exp$clinic_waiting_room, 
-                                             waiting_room_exp$wait_location))
+ggsave("output/wait_time_location_plot.png", 
+       plot = wait_time_location_plot)
 
-waiting_room_location$waiting_room <- waiting_room_location$Var1
-
-waiting_room_location$wait_location <- waiting_room_location$Var2
-
-waiting_room_location$Count <- waiting_room_location$Freq
+## ---- visualise-room-location
 
 wait.location.labels <- c("Inside the \nclinic",
                           "Outside the \nclinic", 
                           "Other")
 
-# plot heatmap of waiting room and waiting location
-ggplot(waiting_room_location, 
+wait_room_location_plot <- 
+  ggplot(waiting_room_location, 
        aes(waiting_room, 
            wait_location, 
            fill = Count)) +
@@ -231,42 +135,13 @@ ggplot(waiting_room_location,
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
-# edit mobile devices response
-waiting_room_exp$mobile_devices <- 
-  ifelse(grepl("Yes", waiting_room_exp$mobile_devices), "Yes", 
-         ifelse(grepl("No", waiting_room_exp$mobile_devices), "No", 
-         "Not sure"))
+ggsave("output/wait_room_location_plot.png", 
+       plot = wait_room_location_plot)
 
-waiting_room_exp$mobile_devices <- factor(waiting_room_exp$mobile_devices, 
-                                          levels = c("Not sure", "No", "Yes"))
+## ---- visualise-mobile-devices-data
 
-# edit mobile data responses
-waiting_room_exp$mobile_data <- 
-  ifelse(grepl("Other", waiting_room_exp$mobile_data), "No connection", 
-         ifelse(grepl("Weak", waiting_room_exp$mobile_data), "Weak", 
-                ifelse(grepl("Moderate", waiting_room_exp$mobile_data), "Moderate", 
-                       ifelse(grepl("Strong", waiting_room_exp$mobile_data), "Strong", 
-                              "Not sure"))))
-
-waiting_room_exp$mobile_data <- factor(waiting_room_exp$mobile_data, 
-                                          levels = c("Not sure", 
-                                                     "No connection", 
-                                                     "Weak", 
-                                                     "Moderate", 
-                                                     "Strong"))
-
-# aggregate mobile data responses and cell phone
-mobile_devices_data <- as.data.frame(table(waiting_room_exp$mobile_devices, 
-                                           waiting_room_exp$mobile_data))
-
-mobile_devices_data$mobile_devices <- mobile_devices_data$Var1
-
-mobile_devices_data$mobile_data <- mobile_devices_data$Var2
-
-mobile_devices_data$Count <- mobile_devices_data$Freq
-
-# plot heatmap of waiting room and waiting location
-ggplot(mobile_devices_data, 
+mobile_data_devices_plot <- 
+  ggplot(mobile_devices_data, 
        aes(mobile_devices, 
            mobile_data, 
            fill = Count)) +
@@ -292,3 +167,6 @@ ggplot(mobile_devices_data,
         plot.subtitle = element_text(color = "#454543"),
         plot.caption = element_text(color = "#454543", face = "italic")
   )
+
+ggsave("output/mobile_data_devices_plot.png", 
+       plot = mobile_data_devices_plot)
