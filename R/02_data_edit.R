@@ -35,6 +35,8 @@ data_edit_demographics <- data.frame(id = "d12",
 
 demographics_processed <- rbind(demographics, data_edit_demographics)
 
+demographics <- demographics_processed
+
 # create variable of months since arrival
 demographics$date_workshop <- 
   as.Date("2024-02-06")
@@ -61,11 +63,14 @@ data_edit_health_related_info <- data.frame(id = "h12",
 health_related_information_processed <- rbind(health_related_information, 
                                               data_edit_health_related_info)
 
+health_related_information <- health_related_information_processed
+
 # standardise visit variable
 health_related_information$visits_standardised <- 
   ifelse(health_related_information$visits %in% c("not frequently cause the response wasn't up to the mark", 
                                                   "1", "1 to 2", "2", "3", "4", "3 to 4"), "< 5", 
-         ifelse(health_related_information$visits %in% c("5", "6", "5 to 6"), "5 - 10", "> 10"))
+         ifelse(health_related_information$visits %in% c("5", "6", "5 to 6"), "5 - 10", 
+                ifelse(health_related_information$visits == "more than 10", "> 10", NA)))
 
 # specify order for plotting
 visits_standardised_order <- c('< 5', 
@@ -85,7 +90,9 @@ communication_exp$comm_hcw <- ifelse(communication_exp$hcw_only == 1,
                                             ifelse(communication_exp$hcw_only == 3, 
                                                    "Neutral", 
                                                    ifelse(communication_exp$hcw_only == 4, 
-                                                          "Agree", "Strongly agree"))))
+                                                          "Agree", 
+                                                          ifelse(communication_exp$hcw_only == 5, 
+                                                                 "Strongly agree", NA)))))
 
 communication_exp$comm_pat <- ifelse(communication_exp$patient_only == 1, 
                                      "Strongly disagree", 
@@ -94,7 +101,9 @@ communication_exp$comm_pat <- ifelse(communication_exp$patient_only == 1,
                                             ifelse(communication_exp$patient_only == 3, 
                                                    "Neutral", 
                                                    ifelse(communication_exp$patient_only == 4, 
-                                                          "Agree", "Strongly agree"))))
+                                                          "Agree", 
+                                                          ifelse(communication_exp$patient_only == 5, 
+                                                                 "Strongly agree", NA)))))
 
 communication_exp$both <- ifelse(communication_exp$both == 1, 
                                  "Strongly disagree", 
@@ -103,7 +112,9 @@ communication_exp$both <- ifelse(communication_exp$both == 1,
                                         ifelse(communication_exp$both == 3, 
                                                "Neutral", 
                                                ifelse(communication_exp$both == 4, 
-                                                      "Agree", "Strongly agree"))))
+                                                      "Agree", 
+                                                      ifelse(communication_exp$both == 5, 
+                                                             "Strongly agree", NA)))))
 
 # specify order for plotting
 likert_standardised_order <- c('Strongly disagree', 

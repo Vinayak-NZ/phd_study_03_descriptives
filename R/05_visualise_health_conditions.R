@@ -13,9 +13,9 @@ underlying_condition_plot <-
   scale_fill_manual(values = c("#46e7fd", "#4739a2")) +
   scale_x_discrete(labels = c("yes" = "Yes", "no" = "No")) +
   labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Bar chart of pre-existing/ underlying conditions within group",
+       subtitle = "Bar chart of disorders/ illnesses within group",
        caption = "Data source: Patient preparedness tool") +
-  xlab("Pre-existing/ underlying conditions") + 
+  xlab("Diagnosed with illness/ disorder") + 
   ylab("Count") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
@@ -45,14 +45,14 @@ diagnosed_icd_plot <-
        subtitle = "Bar chart of conditions reported in group",
        caption = "Data source: Patient preparedness tool", 
        fill = "ICD codes") +
-  xlab("International Classification of Disease (ICD) codes") + 
+  xlab("International Classification \nof Disease (ICD) codes") + 
   ylab("Count") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
         plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
         plot.subtitle = element_text(color = "#454543"),
         plot.caption = element_text(color = "#454543", face = "italic"), 
-        legend.key = element_rect(fill = NA),
+        legend.key = element_rect(color = NA), 
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt"))
 
@@ -68,10 +68,9 @@ doctor_visit_plot <-
   geom_bar(key_glyph = draw_key_blank) + 
   scale_fill_manual(values = rep("#4739a2", length(table(health_related_information$visits_standardised)))) +
   labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Bar chart of conditions reported in group",
-       caption = "Data source: Patient preparedness tool", 
-       fill = "ICD codes") +
-  xlab("International Classification of Disease (ICD) codes") + 
+       subtitle = "Bar chart of primary care visits in the past 12 months",
+       caption = "Data source: Patient preparedness tool") +
+  xlab("Number of visits") + 
   ylab("Count") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 

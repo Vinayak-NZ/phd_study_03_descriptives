@@ -9,7 +9,7 @@ region_resided_plot <-
   xlab("Region") + 
   ylab("Collaborator") +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), 
-        panel.grid = element_line(color = "#e18b22", size = 0.2, linetype = 2),
+        panel.grid = element_line(color = "#e18b22", linewidth = 0.2, linetype = 2),
         plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
         plot.subtitle = element_text(color = "#454543"),
         plot.caption = element_text(color = "#454543", face = "italic")
@@ -20,7 +20,7 @@ ggsave("output/region_resided_plot.png",
 
 ## ---- plot-regions-birth-region-healthcare
 
-region_resided_healthcare_plot <- 
+region_birth_healthcare_plot <- 
   ggplot(cob_input_table, 
        aes(region_birth, 
            healthcare, 
@@ -49,8 +49,8 @@ region_resided_healthcare_plot <-
         plot.caption = element_text(color = "#454543", face = "italic")
   )
 
-ggsave("output/region_resided_healthcare_plot.png", 
-       plot = region_resided_healthcare_plot)
+ggsave("output/region_birth_healthcare_plot.png", 
+       plot = region_birth_healthcare_plot)
 
 ## ---- plot-months-since-arrival
 

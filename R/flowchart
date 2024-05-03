@@ -1,0 +1,12 @@
+flowchart
+
+1) Date and no. People that signed up on google form
+2) Date and no. People that responded to interview request
+3) Date and no. People that were invited to take part
+4) Date and no. People that attended Meet and Greet
+5) Date and no. People that attended First workshop
+6) Date and no. People that attended Second workshop
+7) Date and no. People that attended Third workshop
+8) Date and no. People that attended Fourth workshop
+
+https://cran.r-project.org/web/packages/Gmisc/vignettes/Grid-based_flowcharts.html

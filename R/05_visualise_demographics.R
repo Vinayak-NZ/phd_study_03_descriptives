@@ -94,9 +94,9 @@ socio_demo_major <-
         plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
         plot.subtitle = element_text(color = "#454543"),
         plot.caption = element_text(color = "#454543", face = "italic"), 
-        legend.key = element_rect(fill = NA),
+        legend.key = element_rect(color = NA), 
         legend.key.width = unit(0, "pt"),
-        legend.spacing.x = unit(0, "pt")) 
+        legend.spacing.x = unit(0, "pt"))
 
 ggsave("output/socio_demo_major.png", 
        plot = socio_demo_major)
