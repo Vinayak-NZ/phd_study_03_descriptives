@@ -13,3 +13,7 @@ source("R/05_visualise_demographics.R")
 source("R/05_visualise_health_conditions.R")
 source("R/05_visualise_regions.R")
 source("R/05_visualise_waiting_room.R")
+
+## ---- flowchart-workshops
+
+source("R/06_flowchart_workshops.R")
