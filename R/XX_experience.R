@@ -53,10 +53,11 @@ experience_likert_long <- melt(setDT(experience_likert),
 ggplot(experience_likert_long, aes(x = workshop, 
                                    y = value, 
                                    color = feature)) +
-  geom_line() + 
+  geom_line(size = 2) + 
   labs(title = paste0("Co-creator experiences"), 
        subtitle = "Linechart of mean scores across workshops",
-       caption = "Data source: COT project") +
+       caption = "Data source: COT project", 
+       color = "Dimensions") +
   xlab("Workshop number") + 
   ylab("Scores") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
