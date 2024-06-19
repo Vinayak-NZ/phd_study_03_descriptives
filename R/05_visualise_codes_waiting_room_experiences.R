@@ -15,7 +15,8 @@ emotions$name_labels = factor(emotions$name_labels,
                                          "Positive emotions", 
                                          "Other"))
 
-ggplot(emotions, 
+plot_emotions <- 
+  ggplot(emotions, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -24,7 +25,7 @@ ggplot(emotions,
   ylim(0, 20) +
   labs(title = paste0("Waiting to see the doctor"), 
        subtitle = "Bar chart of emotions whilst waiting",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Emotions") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -35,6 +36,9 @@ ggplot(emotions,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_emotions.png", 
+       plot = plot_emotions)
 
 # thoughts
 thoughts <- codes_sources[[10]]
@@ -49,8 +53,8 @@ thoughts$name_labels = factor(thoughts$name_labels,
                                          "Waiting area observations", 
                                          "Work or study", 
                                          "Other"))
-
-ggplot(thoughts, 
+plot_thoughts <- 
+  ggplot(thoughts, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -60,7 +64,7 @@ ggplot(thoughts,
   coord_flip() +
   labs(title = paste0("Waiting to see the doctor"), 
        subtitle = "Bar chart of emotions whilst waiting",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Emotions") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -71,3 +75,6 @@ ggplot(thoughts,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_thoughts.png", 
+       plot = plot_thoughts)

@@ -1,5 +1,42 @@
 ## ---- visualise-codes-needs
 
+# responsibility-assumptions
+responsibility <- codes_sources[[3]]
+
+responsibility$name_labels <- 
+  ifelse(responsibility$name == "Primarily doctor", 
+         "Doctor", 
+         ifelse(responsibility$name == "Primarily patient", 
+                "Patient", 
+                ifelse(responsibility$name == "Primarily system/ governance/ institutional responsibility", 
+                       "System", 
+                       ifelse(responsibility$name == "Shared responsibility not further specified", 
+                              "Shared", "Other"))))
+
+plot_responsibility <- 
+  ggplot(responsibility, 
+         aes(reorder(name_labels, 
+                     name_labels, 
+                     function(x)-length(x)))) + 
+  geom_bar(fill = "#4739a2") + 
+  ylim(0, 20) +
+  labs(title = paste0("Preparation to see the doctor"), 
+       subtitle = "Bar chart of assumptions on responsibility",
+       caption = "Data source: Patient preparedness tool") +
+  xlab("Assigning of responsibility") + 
+  ylab("Frequency of codes") + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"), 
+        plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
+        plot.subtitle = element_text(color = "#454543"),
+        plot.caption = element_text(color = "#454543", face = "italic"), 
+        legend.key = element_rect(fill = NA),
+        legend.key.width = unit(0, "pt"),
+        legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_responsibility.png", 
+       plot = plot_responsibility)
+
 # needs-complaints
 needs_complaints <- codes_sources[[1]]
 
@@ -26,7 +63,8 @@ needs_complaints$name_labels = factor(needs_complaints$name_labels,
                                                    "Racist attitudes", 
                                                    "Other"))
 
-ggplot(needs_complaints, 
+plot_needs <- 
+  ggplot(needs_complaints, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -36,7 +74,7 @@ ggplot(needs_complaints,
   coord_flip() +
   labs(title = paste0("Needs of patients"), 
        subtitle = "Bar chart of needs and complaints in primary care consultations",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Need/ complaint") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -47,6 +85,9 @@ ggplot(needs_complaints,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_needs.png", 
+       plot = plot_needs)
 
 # system-challenges
 system_challenges <- codes_sources[[2]]
@@ -65,7 +106,8 @@ system_challenges$name_labels = factor(system_challenges$name_labels,
                                                  "Navigating system", 
                                                  "Other"))
 
-ggplot(system_challenges, 
+plot_sys_challenges <- 
+  ggplot(system_challenges, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -75,7 +117,7 @@ ggplot(system_challenges,
   coord_flip() +
   labs(title = paste0("Needs of patients"), 
        subtitle = "Bar chart of healthcare system challenges in Germany",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("System challenge") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -86,3 +128,6 @@ ggplot(system_challenges,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_sys_challenges.png", 
+       plot = plot_sys_challenges)

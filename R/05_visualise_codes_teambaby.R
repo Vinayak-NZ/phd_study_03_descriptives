@@ -22,7 +22,8 @@ tb_retain$name_labels = factor(tb_retain$name_labels,
                                                  "Web-app",
                                                  "Other"))
 
-ggplot(tb_retain, 
+plot_tb_retain <- 
+  ggplot(tb_retain, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -31,7 +32,7 @@ ggplot(tb_retain,
   ylim(0, 20) +
   labs(title = paste0("Adapting TeamBaby"), 
        subtitle = "Bar chart of elements of TeamBaby to retain",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("TeamBaby feature") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -42,6 +43,9 @@ ggplot(tb_retain,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_tb_retain.png", 
+       plot = plot_tb_retain)
 
 # teambaby-modify
 tb_modify <- codes_sources[[14]]
@@ -65,7 +69,8 @@ tb_modify$name_labels = factor(tb_modify$name_labels,
                                           "Web-app",
                                           "Other"))
 
-ggplot(tb_modify, 
+plot_tb_modify <- 
+  ggplot(tb_modify, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -74,7 +79,7 @@ ggplot(tb_modify,
   ylim(0, 50) +
   labs(title = paste0("Adapting TeamBaby"), 
        subtitle = "Bar chart of elements of TeamBaby to modify",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("TeamBaby feature") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -85,3 +90,6 @@ ggplot(tb_modify,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_tb_modify.png", 
+       plot = plot_tb_modify)

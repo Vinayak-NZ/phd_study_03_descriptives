@@ -41,7 +41,8 @@ dt_inclusion$name_labels = factor(dt_inclusion$name_labels,
                                          "Interactivity", 
                                          "Other"))
 
-ggplot(dt_inclusion, 
+plot_dt_inclusion <- 
+  ggplot(dt_inclusion, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -51,7 +52,7 @@ ggplot(dt_inclusion,
   coord_flip() +
   labs(title = paste0("Digital health solutions"), 
        subtitle = "Bar chart of features to include in the digital health tool",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Features") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -62,6 +63,9 @@ ggplot(dt_inclusion,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_dt_inclusion.png", 
+       plot = plot_dt_inclusion)
 
 # exclusion-needs
 dt_exclusion <- codes_sources[[12]]
@@ -104,7 +108,8 @@ dt_exclusion$name_labels = factor(dt_exclusion$name_labels,
                                              "Interactivity", 
                                              "Other"))
 
-ggplot(dt_exclusion, 
+plot_dt_exclusion <- 
+  ggplot(dt_exclusion, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -114,7 +119,7 @@ ggplot(dt_exclusion,
   coord_flip() +
   labs(title = paste0("Digital health tool"), 
        subtitle = "Bar chart of features to exclude in the digital health tool",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Features") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -125,6 +130,9 @@ ggplot(dt_exclusion,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_dt_exclusion.png", 
+       plot = plot_dt_exclusion)
 
 # tool-utility
 tool_utility <- codes_sources[[15]]
@@ -142,7 +150,8 @@ tool_utility$name_labels = factor(tool_utility$name_labels,
                                              "Conditional use",
                                              "Other"))
 
-ggplot(tool_utility, 
+plot_dt_utility <- 
+  ggplot(tool_utility, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -151,7 +160,7 @@ ggplot(tool_utility,
   ylim(0, 20) +
   labs(title = paste0("Digital health tool"), 
        subtitle = "Bar chart of utility of tool",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Expected usage") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -161,4 +170,7 @@ ggplot(tool_utility,
         plot.caption = element_text(color = "#454543", face = "italic"), 
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
-        legend.spacing.x = unit(0, "pt")) 
+        legend.spacing.x = unit(0, "pt"))
+
+ggsave("output/plot_dt_utility.png", 
+       plot = plot_dt_utility)

@@ -1,49 +1,13 @@
 ## ---- visualise-codes-preparation
 
-# responsibility-assumptions
-responsibility <- codes_sources[[3]]
-
-responsibility$name_labels <- 
-  ifelse(responsibility$name == "Primarily doctor", 
-         "Doctor", 
-         ifelse(responsibility$name == "Primarily patient", 
-                "Patient", 
-                ifelse(responsibility$name == "Primarily system/ governance/ institutional responsibility", 
-                       "System", 
-                       ifelse(responsibility$name == "Shared responsibility not further specified", 
-                              "Shared", "Other"))))
-
-ggplot(responsibility, 
-       aes(reorder(name_labels, 
-                   name_labels, 
-                   function(x)-length(x)))) + 
-  geom_bar(fill = "#4739a2") + 
-  ylim(0, 20) +
-  labs(title = paste0("Preparation to see the doctor"), 
-       subtitle = "Bar chart of assumptions on responsibility",
-       caption = "Data source: COT project") +
-  xlab("Assigning of responsibility") + 
-  ylab("Frequency of codes") + 
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"), 
-        plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
-        plot.subtitle = element_text(color = "#454543"),
-        plot.caption = element_text(color = "#454543", face = "italic"), 
-        legend.key = element_rect(fill = NA),
-        legend.key.width = unit(0, "pt"),
-        legend.spacing.x = unit(0, "pt")) 
-
-# ggsave("output/comm_hwc_only_plot.png", 
-#        plot = comm_hwc_only_plot)
-
-
 # preparation-timing
 preparation_timing <- codes_sources[[4]]
 
 preparation_timing$name_labels = ifelse(preparation_timing$name == "PTO", 
                                     "Other", preparation_timing$name)
 
-ggplot(preparation_timing, 
+plot_prep_timing <- 
+  ggplot(preparation_timing, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -51,7 +15,7 @@ ggplot(preparation_timing,
   ylim(0, 20) +
   labs(title = paste0("Preparation to see the doctor"), 
        subtitle = "Bar chart of when people prepare",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Preparation timing") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -63,13 +27,20 @@ ggplot(preparation_timing,
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
 
+ggsave("output/plot_prep_timing.png", 
+       plot = plot_prep_timing)
+
 # preparation-location
 preparation_location <- codes_sources[[5]]
 
 preparation_location$name_labels = factor(preparation_location$name, 
-                                          levels = c("At home", "On the way", "Other"))
+                                          levels = c("At home", 
+                                                     "On the way", 
+                                                     "In the clinic", 
+                                                     "Other"))
 
-ggplot(preparation_location, 
+plot_prep_location <- 
+  ggplot(preparation_location, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -78,7 +49,7 @@ ggplot(preparation_location,
   ylim(0, 20) +
   labs(title = paste0("Preparation to see the doctor"), 
        subtitle = "Bar chart of where people prepare",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Preparation location") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -90,7 +61,8 @@ ggplot(preparation_location,
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
 
-
+ggsave("output/plot_prep_location.png", 
+       plot = plot_prep_location)
 
 # preparation-method
 preparation_method <- codes_sources[[6]]
@@ -107,7 +79,8 @@ preparation_method$name_labels = factor(preparation_method$name_labels,
                                                      "No preparation", 
                                                      "Other"))
 
-ggplot(preparation_method, 
+plot_prep_method <- 
+  ggplot(preparation_method, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -116,7 +89,7 @@ ggplot(preparation_method,
   ylim(0, 20) +
   labs(title = paste0("Preparation to see the doctor"), 
        subtitle = "Bar chart of when people prepare",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Preparation method") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -128,6 +101,8 @@ ggplot(preparation_method,
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
 
+ggsave("output/plot_prep_method.png", 
+       plot = plot_prep_method)
 
 # preparation-reason
 preparation_reason <- codes_sources[[7]]
@@ -142,7 +117,8 @@ preparation_reason$name_labels = factor(preparation_reason$name_labels,
                                                    "Psychological safety", 
                                                    "Other"))
 
-ggplot(preparation_reason, 
+plot_prep_reason <- 
+  ggplot(preparation_reason, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -151,7 +127,7 @@ ggplot(preparation_reason,
   ylim(0, 20) +
   labs(title = paste0("Preparation to see the doctor"), 
        subtitle = "Bar chart of why people prepare",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Preparation reason") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -162,6 +138,9 @@ ggplot(preparation_reason,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_prep_reason.png", 
+       plot = plot_prep_reason)
 
 # preparation-assistance
 preparation_assistance <- codes_sources[[8]]
@@ -176,7 +155,8 @@ preparation_assistance$name_labels = factor(preparation_assistance$name_labels,
                                                    "No assistance", 
                                                    "Other"))
 
-ggplot(preparation_assistance, 
+plot_prep_assistance <- 
+  ggplot(preparation_assistance, 
        aes(reorder(name_labels, 
                    name_labels, 
                    function(x)-length(x)))) + 
@@ -185,7 +165,7 @@ ggplot(preparation_assistance,
   ylim(0, 20) +
   labs(title = paste0("Preparation to see the doctor"), 
        subtitle = "Bar chart of who people get assistance from",
-       caption = "Data source: COT project") +
+       caption = "Data source: Patient preparedness tool") +
   xlab("Preparation assistance") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -196,3 +176,6 @@ ggplot(preparation_assistance,
         legend.key = element_rect(fill = NA),
         legend.key.width = unit(0, "pt"),
         legend.spacing.x = unit(0, "pt")) 
+
+ggsave("output/plot_prep_assistance.png", 
+       plot = plot_prep_assistance)
