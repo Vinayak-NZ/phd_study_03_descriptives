@@ -35,7 +35,7 @@ region_birth_healthcare_plot <-
                        high = "#4739a2", 
                        labels = c("0", "2", "4", "6", "8")) +
   labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Heatmap of regions received care in preior to Germany",
+       subtitle = "Heatmap of region of birth and healthcare services",
        caption = "Data source: Patient preparedness tool") +
   xlab("Region of birth") + 
   ylab("Region received health care in") +

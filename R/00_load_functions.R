@@ -33,3 +33,12 @@ collate_qualcoder_output <- function(text_extracts, image_extracts){
   return(output)
   
 }
+
+# subset-qualcoder-code-frequencies
+subset_code_frequencies <- function(parent_id, data){
+  
+  subset_data <- data[data$parent_name == parent_id, ]
+  
+  return(subset_data)
+  
+}

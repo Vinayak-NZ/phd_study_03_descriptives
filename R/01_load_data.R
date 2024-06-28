@@ -27,3 +27,5 @@ retaining_teambaby <- read.csv("input/retaining_teambaby.csv", sep = "\t")
 modifying_teambaby <- read.csv("input/modifying_teambaby.csv", sep = "\t")
 utility <- read.csv("input/utility.csv", sep = "\t")
 image_codes_all <- read.csv("input/image_codes_all.csv", sep = "\t")
+
+code_frequencies <- read.csv("input/code_frequencies.csv", sep = ",")
