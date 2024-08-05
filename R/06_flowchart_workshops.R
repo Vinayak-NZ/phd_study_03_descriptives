@@ -59,7 +59,7 @@ excluded <- moveBox(excluded,
                       distance(part_one$exp_int, 
                                part_one$invited, 
                                half = TRUE, 
-                               center = FALSE))
+                               center = TRUE))
 
 for (i in 1:(length(part_one) - 1)) {
   connectGrob(part_one[[i]], part_one[[i + 1]], type = "vert") %>%
