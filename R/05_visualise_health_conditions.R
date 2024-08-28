@@ -1,31 +1,37 @@
-## ---- visualise-health-underlying-conditions
+## ---- visualise-health-underlying-conditions-visits
 
-health_related_information$count <- 
-  ifelse(health_related_information$pre_existing_conditions == "yes", 
-         table(health_related_information$pre_existing_conditions)["yes"], 
-         table(health_related_information$pre_existing_conditions)["no"])
-
-underlying_condition_plot <- 
-  ggplot(data = health_related_information, 
-       aes(x = reorder(pre_existing_conditions, count), 
-           fill = pre_existing_conditions)) + 
-  geom_bar(key_glyph = draw_key_blank) + 
-  scale_fill_manual(values = c("#46e7fd", "#4739a2")) +
+health_condition_visit_plot <- 
+  ggplot(visits_condition_input_table, 
+         aes(health_condition, 
+             visits, 
+             fill = Count)) +
+  geom_tile(color = "#FFFFFF",
+            lwd = 1.5,
+            linetype = 1) +
+  geom_text(aes(label = Count), color = "#FFFFFF", size = 4) +
   scale_x_discrete(labels = c("yes" = "Yes", "no" = "No")) +
+  coord_fixed() + 
+  scale_fill_gradient2(low = "#e18b22",
+                       mid = "#46e7fd",
+                       high = "#4739a2", 
+                       labels = c("0", "2", "4", "6", "8")) +
   labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Bar chart of disorders/ illnesses within group",
+       subtitle = "Heatmap of doctor visits and underlying conditions",
        caption = "Data source: Patient preparedness tool") +
   xlab("Diagnosed with illness/ disorder") + 
-  ylab("Count") + 
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"), 
+  ylab("Number of visits") +
+  guides(fill = guide_colourbar(title = "Count",
+                                barwidth = 0.5,
+                                barheight = 20)) +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), 
+        panel.grid = element_line(color = "#e18b22", size = 0.2, linetype = 2),
         plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
         plot.subtitle = element_text(color = "#454543"),
-        plot.caption = element_text(color = "#454543", face = "italic"), 
-        legend.position = "none") 
+        plot.caption = element_text(color = "#454543", face = "italic")
+  )
 
-ggsave("output/underlying_condition_plot.png", 
-       plot = underlying_condition_plot)
+ggsave("output/health_condition_visit_plot.png", 
+       plot = health_condition_visit_plot)
 
 ## ---- visualise-icd-conditions
 
@@ -58,26 +64,3 @@ diagnosed_icd_plot <-
 
 ggsave("output/diagnosed_icd_plot.png", 
        plot = diagnosed_icd_plot)
-
-## ---- visualise-doctor-visits
-
-doctor_visit_plot <- 
-  ggplot(data = health_related_information, 
-       aes(x = factor(visits_standardised, level = visits_standardised_order), 
-           fill = visits_standardised)) + 
-  geom_bar(key_glyph = draw_key_blank) + 
-  scale_fill_manual(values = rep("#4739a2", length(table(health_related_information$visits_standardised)))) +
-  labs(title = paste0("Characteristics of collaborators"), 
-       subtitle = "Bar chart of primary care visits in the past 12 months",
-       caption = "Data source: Patient preparedness tool") +
-  xlab("Number of visits") + 
-  ylab("Count") + 
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"), 
-        plot.title = element_text(color = "#2F2E41", size = 12, face = "bold"),
-        plot.subtitle = element_text(color = "#454543"),
-        plot.caption = element_text(color = "#454543", face = "italic"), 
-        legend.position = "none")
-
-ggsave("output/doctor_visit_plot.png", 
-       plot = doctor_visit_plot)

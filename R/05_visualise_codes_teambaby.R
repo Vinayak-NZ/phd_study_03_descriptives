@@ -30,7 +30,7 @@ plot_tb_retain <-
   geom_bar(fill = "#4739a2") + 
   scale_x_discrete(drop=FALSE) +
   ylim(0, 20) +
-  labs(title = paste0("Adapting TeamBaby"), 
+  labs(title = paste0("Suitability of TeamBaby"), 
        subtitle = "Bar chart of elements of TeamBaby to retain",
        caption = "Data source: Patient preparedness tool") +
   xlab("TeamBaby feature") + 
@@ -77,7 +77,7 @@ plot_tb_modify <-
   geom_bar(fill = "#4739a2") + 
   scale_x_discrete(drop=FALSE) +
   ylim(0, 50) +
-  labs(title = paste0("Adapting TeamBaby"), 
+  labs(title = paste0("Suitability TeamBaby"), 
        subtitle = "Bar chart of elements of TeamBaby to modify",
        caption = "Data source: Patient preparedness tool") +
   xlab("TeamBaby feature") + 

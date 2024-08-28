@@ -113,6 +113,19 @@ cob_input_table$Count <- cob_input_table$Freq
 
 ## ---- aggregate-health-related-info
 
+# aggregation for visits and underlying condition
+visits_condition_input_table <- 
+  as.data.frame(table(health_related_information$pre_existing_conditions, 
+                      health_related_information$visits_standardised))
+
+visits_condition_input_table$health_condition <- visits_condition_input_table$Var1
+
+visits_condition_input_table$visits <- factor(visits_condition_input_table$Var2, 
+                                              levels = c("Not specified", "< 5", 
+                                                         "5 - 10", "> 10"))
+
+visits_condition_input_table$Count <- visits_condition_input_table$Freq
+
 # convert conditions to high level ICD codes
 health_conditions <- data.frame(condition = conditions_diagnosed)
 
@@ -217,3 +230,20 @@ mobile_devices_data$mobile_devices <- mobile_devices_data$Var1
 mobile_devices_data$mobile_data <- mobile_devices_data$Var2
 
 mobile_devices_data$Count <- mobile_devices_data$Freq
+
+## ---- aggregate-communication-exp-survey
+
+# aggregation for feeling misunderstood and not being listened to
+communication_exp_input <- 
+  as.data.frame(table(communication_exp$misunderstood, 
+                      communication_exp$listened))
+
+communication_exp_input$misunderstood <- factor(communication_exp_input$Var1, 
+                                                   levels = c("Not sure", "No", 
+                                                              "Yes"))
+
+communication_exp_input$listened <- factor(communication_exp_input$Var2, 
+                                         levels = c("Not sure ", "No", 
+                                                    "Yes"))
+
+communication_exp_input$Count <- communication_exp_input$Freq

@@ -20,7 +20,7 @@ plot_responsibility <-
                      function(x)-length(x)))) + 
   geom_bar(fill = "#4739a2") + 
   ylim(0, 20) +
-  labs(title = paste0("Preparation to see the doctor"), 
+  labs(title = paste0("Needs of patients"), 
        subtitle = "Bar chart of assumptions on responsibility",
        caption = "Data source: Patient preparedness tool") +
   xlab("Assigning of responsibility") + 
@@ -73,7 +73,7 @@ plot_needs <-
   ylim(0, 50) +
   coord_flip() +
   labs(title = paste0("Needs of patients"), 
-       subtitle = "Bar chart of needs and complaints in primary care consultations",
+       subtitle = "Bar chart of needs and complaints in a healthcare setting",
        caption = "Data source: Patient preparedness tool") +
   xlab("Need/ complaint") + 
   ylab("Frequency of codes") + 
