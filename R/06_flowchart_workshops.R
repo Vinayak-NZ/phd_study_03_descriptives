@@ -75,7 +75,7 @@ dev.off()
 
 # part two of flochart diagram
 
-team_baby_access <- boxGrob(glue("TeamBaby web-app access",
+team_baby_access <- boxGrob(glue("DHI A access",
                                  "n = {pop}", 
                                  "Date = 10th February", 
                                  pop = txtInt(10),
