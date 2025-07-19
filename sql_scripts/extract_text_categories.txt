@@ -1,0 +1,16 @@
+select
+	*
+from 
+	case_text 
+full outer join 
+	code_text 
+		on case_text.fid = code_text.fid 
+		and 
+		code_text.pos0 >= case_text.pos0 
+		and 
+		code_text.pos1 <= case_text.pos1 
+left outer join 
+	code_name 
+		on code_text.cid = code_name.cid
+	where 
+		code_name.catid = 1

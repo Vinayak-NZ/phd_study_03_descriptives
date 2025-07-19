@@ -30,10 +30,10 @@ plot_tb_retain <-
   geom_bar(fill = "#4739a2") + 
   scale_x_discrete(drop=FALSE) +
   ylim(0, 20) +
-  labs(title = paste0("Adapting TeamBaby"), 
-       subtitle = "Bar chart of elements of TeamBaby to retain",
+  labs(title = paste0("Suitability of DHI A"), 
+       subtitle = "Bar chart of elements of DHI A to retain",
        caption = "Data source: Patient preparedness tool") +
-  xlab("TeamBaby feature") + 
+  xlab("DHI A feature") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
@@ -77,10 +77,10 @@ plot_tb_modify <-
   geom_bar(fill = "#4739a2") + 
   scale_x_discrete(drop=FALSE) +
   ylim(0, 50) +
-  labs(title = paste0("Adapting TeamBaby"), 
-       subtitle = "Bar chart of elements of TeamBaby to modify",
+  labs(title = paste0("Suitability of DHI A"), 
+       subtitle = "Bar chart of elements of DHI A to modify",
        caption = "Data source: Patient preparedness tool") +
-  xlab("TeamBaby feature") + 
+  xlab("DHI A feature") + 
   ylab("Frequency of codes") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 

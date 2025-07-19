@@ -1,0 +1,7 @@
+select
+	*
+from 
+	code_image
+left outer join 
+	code_name 
+		on code_image.cid = code_name.cid

@@ -72,6 +72,10 @@ health_related_information$visits_standardised <-
          ifelse(health_related_information$visits %in% c("5", "6", "5 to 6"), "5 - 10", 
                 ifelse(health_related_information$visits == "more than 10", "> 10", NA)))
 
+health_related_information$visits_standardised <- 
+  ifelse(is.na(health_related_information$visits_standardised), "Not specified", 
+         health_related_information$visits_standardised)
+
 # specify order for plotting
 visits_standardised_order <- c('< 5', 
                                '5 - 10', 
