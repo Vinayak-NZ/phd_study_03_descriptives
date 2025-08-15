@@ -10,6 +10,7 @@ workshop_four_exp <- read.csv("input/workshop_04_co_creator_experience_survey.cs
 
 communication_exp <- read.csv("input/workshop_01_communication_survey.csv", sep = ";")
 waiting_room_exp <- read.csv("input/workshop_02_waiting_room_survey.csv", sep = ";")
+tb_ratings <- read.csv("input/rating_teambaby_lessons.csv", sep = ",")
 
 needs_complaints <- read.csv("input/needs_complaints.csv", sep = "\t")
 system_challenges <- read.csv("input/system_challenges.csv", sep = "\t")
